@@ -1,0 +1,409 @@
+<!--
+  Programming Assignment 2 Write-up
+  Version: 0.1 
+  Date Changed: 9/23/13
+  Last Edited By: Menghui Wang
+  
+  Change Log:
+    9/15/13 - First Version Release (0.1) for review
+    9/18/13 - Changed all references of ListADT and LinkedList to 
+              CircularListADT and CircularLinkedList. 
+    9/18/13 - Modified the CircularListADT interface information
+              to reflect the use of a current position and offsets
+              for accessing nodes.
+    9/19/13 - Replaced references to "round" with "cycle" and fixed
+              text to be more clear about the usage.
+    9/20/13 - Release Version (0.2) for review
+    9/23/13 - Modified CircularListADT interface
+  
+-->
+<content for="title">CS 367, Programming Assignment 2</content>
+
+<content for="top">
+<h2>CS 367 Programming Assignment 2</h2>
+<font size="+1" color="#990000"><b>DUE by 10:00 PM on Sunday, October 13th</b><br></font>
+
+<br>
+<a href="#Announcements">P2 Announcements</a> |
+<a href="#Overview">Overview</a> |
+<a href="#Specifications">Specifications</a> |
+<a href="#Steps">Steps</a> |
+<a href="#Submission">Submission</a>
+</content>
+
+
+<content for="main">
+
+<div class="announcements">
+
+<a name="Announcements"></a>
+<h2>P2 Announcements</h2>
+
+<p>Corrections, clarifications, and other announcements regarding this programming assignment will be found below.</p>
+
+<ul>
+  <li><b>9/23/2013:</b> Program 2 assigned.</li>
+</ul>
+
+
+</div>
+<div>
+
+<a name="Overview"></a>
+<h2>Overview</h2>
+
+<h3>Goals</h3>
+
+<p>The goals of this assignment are to:</p>
+<ul>
+  <li>Understand and implement a circular doubly-linked chain of nodes.</li>
+  <li>Gain experience working with Java references (i.e., pointers).</li>
+  <li>Implement exceptions.</li>
+  <li>Gain experience writing classes which implement Java interfaces.</li>
+  <li>Develop an application that processes input commands.</li>
+  <li>Get more practice with console and file I/O.</li>
+</ul>
+
+<h3>Description</h3>
+
+<p>During the Siege of Yodfat, in AD 67, Jewish commander Flavius Josephus and his 
+40 soldiers were trapped in a cave, the exit of which was blocked by Roman forces. 
+They chose suicide over capture and decided they would form a circle and start 
+killing themselves using a step of three. In his account of the battle, Josephus 
+states that either by luck or divine intervention he and another man remained until 
+the final two and surrendered to the Romans.</p>
+
+<p>For this assignment, you will write a program that simulates the Josephus 
+counting problem using a circular doubly-linked chain of nodes. People will be 
+added to the circle at the current position in the list. For each cycle of 
+the simulation the entire list will be iterated over at least once and every k-th 
+person will be eliminated. People will be represented by their first name using 
+Strings.</p>
+
+<p>You'll write a main class as your application as was done in 
+<a href="?r=programs&programNumber=1">Program 1</a>. Additionally, you'll write 
+a CircularLinkedList class that is used by your application to implement the circle of people. 
+Your main class prompts the user to choose an operation that manipulates the circle 
+(specified below).</p>
+
+
+<p>Your CircularLinkedList class must implement the CircularListADT interface using a circular 
+doubly-linked chain of nodes. You'll also implement an exception class used by 
+your CircularLinkedList to signal problems.</p>
+  
+
+</div>
+<div>
+
+<a name="Specifications"></a>
+<h2>Specifications</h2>
+      
+
+<h3>The <tt>CircularListADT&lt;E&gt;</tt> interface</h3>
+
+<p>A <tt>CircularListADT&lt;E&gt;</tt> interface is provided for you
+(see <a href="assignments/p2/files/CircularListADT.java"><tt>CircularListADT.java</tt></a>).
+The <tt>CircularListADT&lt;E&gt;</tt> interface is a generic interface that you will implement
+in your implementation of a <tt>CircularLinkedList</tt>.
+The interface describes the following methods, which you will implement in your <tt>CircularLinkedList</tt>
+class.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tbody>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>void add(E item)</tt></td>
+    <td>Adds the provided item at the current position in the CircularLinkedList, setting previous 
+        current node to be the next node in the list.
+    </td>
+  </tr>
+  <tr>
+    <td><tt>E remove()</tt></td>
+    <td>Removes the item at the current position in the list.
+	    Returns the item that was removed.
+		Throws an <tt>ElementNotFoundException</tt> if the list is empty.
+	</td>
+  </tr>
+  <tr>
+    <td><tt>E get(int offset)</tt></td>
+    <td>Returns the item at the given offset to the current position in the list.
+		Throws an <tt>ElementNotFoundException</tt> if the list is empty.
+	</td>
+  </tr>
+  <tr>
+    <td><tt>boolean isEmpty()</tt></td>
+    <td>Returns whether or not the list is empty.</td>
+  </tr>
+  <tr>
+    <td><tt>int size()</tt></td>
+    <td>Returns how many nodes are in the list.</td>
+  </tr>
+  <tr>
+    <td><tt>void setCurrentPosition(int offset)</tt></td>
+    <td>Offsets the current position by the specified value.</td>
+  </tr>
+</tbody>
+</table>
+
+<p><font color="red">Do <b><em>not</em></b> modify the <tt>CircularListADT</tt> interface in any way.</font></p>
+
+
+<h3>The <tt>ListNode&lt;E&gt;</tt> class</h3>
+
+<p>The <tt>ListNode&lt;E&gt;</tt> class represents one node of a <tt>CircularLinkedList</tt>. This class is 
+also provided for you (see <a href="assignments/p2/files/ListNode.java"><tt>ListNode.java</tt>)</a>.
+It has the following methods and constructor:</p>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tbody>
+  <tr>
+    <th width="40%">Constructor</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>ListNode&lt;E&gt;(E data)</tt></td>
+    <td>Constructs a <tt>ListNode&lt;E&gt;</tt> with the specified data and a
+		null pointer to its next node.</td>
+  </tr>
+  <tr>
+    <td><tt>ListNode&lt;E&gt;(E data, ListNode&lt;E&gt; next)</tt></td>
+    <td>Constructs a <tt>ListNode&lt;E&gt;</tt> with the specified data
+	and a pointer to the specified next node.</td>
+  </tr>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>E getData()</tt></td>
+    <td>Returns the data stored in this node.</td>
+  </tr>
+  <tr>
+    <td><tt>ListNode&lt;E&gt; getNext()</tt></td>
+    <td>Returns the <tt>ListNode&lt;E&gt;</tt> that comes after this <tt>ListNode&lt;E&gt;</tt>. Returns null if this node does not have a next node.</td>
+  </tr>
+  <tr>
+    <td><tt>ListNode&lt;E&gt; getPrevious()</tt></td>
+    <td>Returns the <tt>ListNode&lt;E&gt;</tt> that comes before this <tt>ListNode&lt;E&gt;</tt>. Returns null if this node does not have a next node.</td>
+  </tr>
+  <tr>
+    <td><tt>void setData(E data)</tt></td>
+    <td>Sets the data stored in this node to the specified item.</td>
+  </tr>
+  <tr>
+    <td><tt>void setNext(ListNode&lt;E&gt; prev)</tt></td>
+    <td>Sets the next node to point to the given <tt>ListNode&lt;E&gt;</tt>.</td>
+  </tr>
+  <tr>
+    <td><tt>void setPrevious(ListNode&lt;E&gt; prev)</tt></td>
+    <td>Sets the previous node to point to the given <tt>ListNode&lt;E&gt;</tt>.</td>
+  </tr>
+</tbody>
+</table>
+<p><font color="red">Do <b><em>not</em></b> modify the <tt>Listnode</tt> class in any way.</font></p>
+
+
+<h3>The <tt>CircularLinkedList&lt;E&gt;</tt> class</h3>
+
+<p>You will write the <tt>CircularLinkedList&lt;E&gt;</tt> class to implement the
+<tt>CircularListADT&lt;E&gt;</tt> interface. In addition to implementing each method in the
+<tt>CircularListADT&lt;E&gt;</tt> interface also implement the following method.</p>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tbody>
+  <tr>
+    <th width="40%">Method</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>String print(int offset)</tt></td>
+	<td>Returns a String containing the contents of the list formatted as follows:<br/><br/>
+	<blockquote>
+	Person1<br/>
+	Person2<br/>
+	...<br/>
+	PersonN<br/>
+	</blockquote>
+  The list should start from the node at the provided offset from the current position and loop through the entire list until 
+  every member of the list has been printed.
+  </tr>
+</tbody>
+</table>
+
+
+<h3>The <tt>ElementNotFoundException</tt> class</h3>
+
+<p>You will write an exception class to be used by your implementation of a <tt>CircularLinkedList</tt>
+to signal when an element cannot be found in your CircularLinkedList. This class should be a checked 
+exception. You may write any constructors and methods you deem necessary for this class.</p>
+
+
+<h3>The <tt>JosephusMain</tt> class</h3>
+
+<p>The application program, <tt>JosephusMain</tt>, creates and uses a
+<tt>CircularLinkedList&lt;E&gt;</tt> to represent and simulate the Josephus counting problem.
+ You will write code for each of the options
+listed below. Your code should make use of the <tt>CircularLinkedList</tt> and <tt>ElementNotFoundException</tt> classes you have written, where appropriate.</p>
+
+<p>The
+<a href="assignments/p2/files/JosephusMain.java"><tt>JosephusMain.java</tt></a>
+file contains the outline of the <tt>JosephusMain</tt> class. Download this file
+and use it as the starting point for your <tt>JosephusMain</tt> implementation.</p>
+
+
+<a name="main"></a>
+
+<p>For this program, you'll access a file containing the initial list of people in the 
+circle. The pathname of this file will be provided by using command-line arguments, 
+similar to what was done in <a href="?r=programs&programNumber=1">Program 1</a>. When 
+the program starts the first person added to the circle will be where the current position 
+starts from. Each cycle will go around the entire circle at least once, eleminating every k-th 
+person (where k is the step size). A cycle will be considered finished when one more person is 
+eliminated after passing by the starting position. Therefore, even if the size of the step, k, 
+is larger than the size of the circle at least one person will be eliminated each cycle. 
+
+<p>The command options are:</p>   
+<table border="1" cellpadding="2" cellspacing="0">
+<tbody>
+  <tr>
+    <th width="15%">Command format</th>
+    <th width="85%">Description</th>
+  </tr>
+  <tr>
+    <td align="center"><tt>a <i>name</i></tt></td>
+    <td><b>A</b>dd a person to the existing circle. This person will be added to the circle at the 
+    current position.
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><tt>p</tt></td>
+    <td><b>P</b>rint the circle in the format specified by the <tt>CircularLinkedList</tt>'s <tt>print()</tt> method. 
+    You should start printing the circle at the current position.
+    </td>
+  </tr>  
+  <tr>
+    <td align="center"><tt>r <i>stepSize</i> <i>direction</i> <i>#ofCycles</i></tt></td>
+    <td>
+	<b>R</b>uns the simulation for the provided number of cycles using the direction provided to determine if the circle should be iterated over 
+  forwards or backwards and using the step size provided to determine when a person is eliminated. The value for stepSize can be 
+  any number greater than 0. The value of direction must be either "forward", "f", "backward", or "b". The number of cycles to 
+  run for can be any number greater than or equal to 0. If any of these parameters do not meet these requirements then an error 
+  message should be printed explaining proper use of the parameters. 
+  
+  When running the simulation each cycle should start from where the previous cycle ended. It should start by printing a message
+  stating that "Cycle Number # Has Begun". The cycle will continue in the direction specified until the entire circle has been 
+  traveled at least once. Every k-th person that is reached while traveling the circle should be eliminated by the person that came 
+  directly before them and a message should be printed stating "[name of kth person] has been eliminated by [name of (k-1)th person]. For 
+  example, for the given set { "A", "B", "C", "D", "E"} if the direction was "forward" and k fell on the fourth element ("D") then 
+  the message "D has been eliminated by C" should be printed. If the direction was "backward" then the message "D has been eliminated 
+  by E" would be printed since the k-1 person would have come from behind. Once the starting location is reached 
+  the cycle should continue until one more person is eliminated. If the starting location happens to coincide with a k-th location 
+  then the cycle is over. After a cycle ends a message should be printed stating "Cycle Number # Has Ended". 
+  
+  The simulation should continue until either the specified number of cycles have been run or until there is no one remaining. If 
+  the number of cycle specified was 0 then the simulation should run until the circle is empty, regardless of the number of cycles it
+  takes. At the end of each simulation a message should be printed stating "# people still remain alive."
+	</td>
+  </tr>
+  <tr>
+     <td align="center"><tt>x</tt></td>
+     <td>Display &quot;<tt>exit</tt>&quot; and e<b>x</b>it the program. This
+     command has already been implemented for you.</td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+<div>
+
+<a name="Steps"></a>
+<h2>Steps</h2>
+
+<p>After you have read this program page and given thought to the problem
+we suggest the following steps:</p>
+
+<ol>
+  <li>If you are working with a partner, review the
+      <a href="?r=coursework#pp">rules for pair programming</a>.</li>
+  <li>Review these <a href="?r=styleGuide">style</a> and
+      <a href="?r=commentingGuide">commenting</a> standards that are used to
+      evaluate your program.</li>
+  <li>You may use the Java development environment of your choice in CS 367.
+      <em><b>However, all programs must compile and run on the lab computers
+      for grading.</b></em> If you are going to use the CS
+      <a href="?r=computerLabs">lab computers</a>, we recommend that you use
+      Eclipse. You may want to review the
+      <a href="http://pages.cs.wisc.edu/%7Ecs302/labs/EclipseTutorial/" target="_tab">Eclipse
+      tutorial</a> to learn the basics. Note that on the Linux lab computers,
+      you should enter "<tt>eclipse&amp;</tt>" at the prompt instead of what
+      is described in the tutorial.</li>
+  <li>Download the following to your programming assignment 2 directory:
+      <ul>
+        <li><a href="assignments/p2/files/ListNode.java"><tt>ListNode.java</tt></a></li>
+        <li><a href="assignments/p2/files/CircularListADT.java"><tt>CircularListADT.java</tt></a></li>
+        <li><a href="assignments/p2/files/JosephusMain.java"><tt>JosephusMain.java</tt></a></li>
+      </ul>
+  </li>
+  <li>Implement and thoroughly test your <tt>CircularLinkedList&lt;E&gt;</tt> class and any
+      additional supporting classes, including your <tt>ElementNotFoundException</tt> class.</li>
+  <li>Incrementally implement the <tt>JosephusMain</tt> class as specified in
+      the <a href="#main">main program section</a> above. Test each step to
+      ensure your program is working correctly before implementing the next
+      step. Create a small text file for testing (it will be easier to debug
+      than larger ones) and make sure you test all the boundary and negative
+      cases.  
+      <a name="InputFiles"></a> <em>Download these sample genre files,
+      <a href="assignments/p2/files/circle.txt">circle.txt</a> and follow the
+	  steps in the <a href="assignments/p2/files/sampleInput.txt">sampleInput.txt</a>
+      and make sure your program produces the <b>exact same</b> output as given in 
+      the <a href="assignments/p2/files/sampleOutput.txt">sampleOutput.txt</a>.</em>
+	  </li>
+  <li>If you are not using the lab computers to develop your program, make
+      sure you compile and run your program to ensure that it works on the
+      Linux lab computers. You can compile your Java source using <tt>javac</tt>
+      in a terminal window as in this example: <dir><tt>javac *.java</tt></dir>
+      and the run your program using <tt>java</tt> as in:
+
+      <dir><tt>java JosephusMain</tt></dir></li>
+
+  <li>Submit your work for grading.</li>
+</ol>
+
+
+</div>
+<div>
+
+<a name="Submission"></a>
+<h2>Submitting Your Work</h2>
+
+<p>Make sure your code follows the <a href="?r=styleGuide">style</a> and
+<a href="?r=commentingGuide">commenting</a> standards used in CS 302 and
+CS 367.</p>
+
+<p><a href="?r=coursework#Handin">Electronically submit</a> the following file
+to your <b><tt>in</tt></b> "handin" directory by the due date and time (or
+refer to the <a href="?r=coursework#Late">late policy</a>):</p>
+
+<ul>
+  <li>"<tt>JosephusMain.java</tt>" containing your Josephus Simulation processing application,</li>
+  <li>"<tt>CircularLinkedList.java</tt>" containing your implementation of the <tt>CircularLinkedList&lt;E&gt;</tt> class,
+  <li>"<tt>ElementNotFoundException.java</tt>" containing your implementation of the 
+  <tt>ElementNotFoundException</tt>" class, and</li>
+  <li>"<tt>*.java</tt>" additional classes that you've implemented for your program.</li>
+  <br />
+  <li>If you are working with a partner, only one partner submits the program 
+      files, but <b>both partners must submit to his/her own hand-in directory
+      a completed
+      <a href="assignments/README.txt"><tt>README.txt</tt></a> file.</b>
+      Students working in pairs must follow the 
+      <a href="?r=coursework#pp">rules for pair programming</a>.</li>
+</ul>
+
+<p><em><b>Please turn in only the files named above.</b></em> Extra files 
+clutter up the "handin" directories.</p>
+
+</div>
+</content>

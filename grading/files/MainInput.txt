@@ -1,0 +1,42 @@
+s emptyFile.txt
+p
+a drama
+12
+a drama
+4
+a action
+7
+a action
+13
+a drama
+15
+p
+c 1
+m 3
+m 4
+r 3
+p
+w 2
+p
+a action
+20
+a drama
+11
+p
+s myQueue.txt
+w 10
+p
+l myQueue.txt
+a drama
+40
+-1
+abc
+14
+a notagenre
+w -1
+c a
+m *
+r abc
+w five
+l notafile
+x

@@ -1,0 +1,38 @@
+
+Cycle Number 1 Has Begun
+Jesse has been eliminated by Alina
+Orval has been eliminated by Dimple
+Jerry has been eliminated by Carolyn
+Bernard has been eliminated by Robert
+Trena has been eliminated by Edgardo
+Shakira has been eliminated by Glynis
+Tiffanie has been eliminated by Quincy
+Tawna has been eliminated by Nelida
+Cari has been eliminated by Teodora
+Latanya has been eliminated by Natividad
+Cycle Number 1 Has Ended
+
+Cycle Number 2 Has Begun
+Ozell has been eliminated by Alina
+Carolyn has been eliminated by Janette
+Britany has been eliminated by Robert
+Glynis has been eliminated by Lourie
+Brittanie has been eliminated by Quincy
+Teodora has been eliminated by Major
+Greg has been eliminated by Natividad
+Cycle Number 2 Has Ended
+13 people still remain alive
+
+1 Alina
+2 Dimple
+3 Janette
+4 Georgetta
+5 Robert
+6 Edgardo
+7 Lourie
+8 Jeanice
+9 Quincy
+10 Nelida
+11 Major
+12 Shawnee
+13 Natividad
