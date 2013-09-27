@@ -30,9 +30,6 @@ public class JosephusMain {
         Scanner scan = new Scanner(System.in);
 
         while (true) {
-            System.out.print("Input command: ");
-            System.out.flush();
-
             String line = scan.nextLine();
             if (line == null || line.length() == 0)
                 continue;

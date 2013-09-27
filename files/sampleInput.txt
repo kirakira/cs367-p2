@@ -1,5 +1,20 @@
-
 r 3 f 2
-
 p
-
+a Smily
+r 5 backward 0
+p
+a A
+a B
+a C
+a D
+p
+r 2 forward 1
+a E
+a F
+p
+r 3 b 2
+a G
+a H
+r 1 f 0
+p
+x
