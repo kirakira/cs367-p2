@@ -1,7 +1,7 @@
 <!--
   Programming Assignment 2 Write-up
-  Version: 0.1 
-  Date Changed: 9/23/13
+  Version: 0.3 
+  Date Changed: 9/25/13
   Last Edited By: Menghui Wang
   
   Change Log:
@@ -15,6 +15,11 @@
               text to be more clear about the usage.
     9/20/13 - Release Version (0.2) for review
     9/23/13 - Modified CircularListADT interface
+    9/25/13 - Modified the ending conditions for a cycle, made minor 
+              grammar corrections, and added an example of walking 
+              through a single cycle.
+    9/25/13 - Release Version (0.3) for review
+    9/26/13 - Fixed some typos; added some clarification for the "a" command
   
 -->
 <content for="title">CS 367, Programming Assignment 2</content>
@@ -42,7 +47,7 @@
 <p>Corrections, clarifications, and other announcements regarding this programming assignment will be found below.</p>
 
 <ul>
-  <li><b>9/23/2013:</b> Program 2 assigned.</li>
+  <li><b>9/30/2013:</b> Program 2 assigned.</li>
 </ul>
 
 
@@ -260,9 +265,10 @@ and use it as the starting point for your <tt>JosephusMain</tt> implementation.<
 circle. The pathname of this file will be provided by using command-line arguments, 
 similar to what was done in <a href="?r=programs&programNumber=1">Program 1</a>. When 
 the program starts the first person added to the circle will be where the current position 
-starts from. Each cycle will go around the entire circle at least once, eleminating every k-th 
-person (where k is the step size). A cycle will be considered finished when one more person is 
-eliminated after passing by the starting position. Therefore, even if the size of the step, k, 
+starts from. Each cycle will go around the entire circle at least once, eliminating every k-th 
+person (where k is the step size). A cycle will be considered finished when the following two 
+conditions are met: 1) Every person in the circle has counted at least once and 2) The count is
+evenly divisible by the step size. Therefore, even if the size of the step, k, 
 is larger than the size of the circle at least one person will be eliminated each cycle. 
 
 <p>The command options are:</p>   
@@ -275,7 +281,8 @@ is larger than the size of the circle at least one person will be eliminated eac
   <tr>
     <td align="center"><tt>a <i>name</i></tt></td>
     <td><b>A</b>dd a person to the existing circle. This person will be added to the circle at the 
-    current position.
+        current position, and the person originally at the current position (if exists) will be shifted on the next (forward) position
+        relative to the new person.
     </td>
   </tr>
   <tr>
@@ -287,25 +294,30 @@ is larger than the size of the circle at least one person will be eliminated eac
   <tr>
     <td align="center"><tt>r <i>stepSize</i> <i>direction</i> <i>#ofCycles</i></tt></td>
     <td>
+  <p>
 	<b>R</b>uns the simulation for the provided number of cycles using the direction provided to determine if the circle should be iterated over 
   forwards or backwards and using the step size provided to determine when a person is eliminated. The value for stepSize can be 
   any number greater than 0. The value of direction must be either "forward", "f", "backward", or "b". The number of cycles to 
   run for can be any number greater than or equal to 0. If any of these parameters do not meet these requirements then an error 
   message should be printed explaining proper use of the parameters. 
-  
+  </p>
+  <p>
   When running the simulation each cycle should start from where the previous cycle ended. It should start by printing a message
   stating that "Cycle Number # Has Begun". The cycle will continue in the direction specified until the entire circle has been 
   traveled at least once. Every k-th person that is reached while traveling the circle should be eliminated by the person that came 
   directly before them and a message should be printed stating "[name of kth person] has been eliminated by [name of (k-1)th person]. For 
   example, for the given set { "A", "B", "C", "D", "E"} if the direction was "forward" and k fell on the fourth element ("D") then 
   the message "D has been eliminated by C" should be printed. If the direction was "backward" then the message "D has been eliminated 
-  by E" would be printed since the k-1 person would have come from behind. Once the starting location is reached 
-  the cycle should continue until one more person is eliminated. If the starting location happens to coincide with a k-th location 
-  then the cycle is over. After a cycle ends a message should be printed stating "Cycle Number # Has Ended". 
-  
+  by E" would be printed since the k-1 person would have come from behind. The last person left alive will be eliminated by his own hand. 
+  Once everyone in the circle has counted at least once they cycle should continue until the count is evenly divisible by k and that last 
+  person is eliminated. After a cycle ends a message should be printed stating "Cycle Number # Has Ended". 
+  </p>
+  <p>
   The simulation should continue until either the specified number of cycles have been run or until there is no one remaining. If 
   the number of cycle specified was 0 then the simulation should run until the circle is empty, regardless of the number of cycles it
-  takes. At the end of each simulation a message should be printed stating "# people still remain alive."
+  takes. At the end of each simulation a message should be printed stating "# people still remain alive" or "1 person remains alive", 
+  as is applicable. 
+  </p>
 	</td>
   </tr>
   <tr>
@@ -315,6 +327,18 @@ is larger than the size of the circle at least one person will be eliminated eac
   </tr>
 </tbody>
 </table>
+
+<br/>
+<p>Lets run through a quick example. Suppose we have a circle of 7 people: {'A','B','C','D','E','F','G'}. The current location in the 
+circle is at 'A'. Running a simulation for 1 cycle in the forward direction with a step size of 3 would yield the following. We would 
+start by printing a message saying that Cycle Number 1 Has Begun. The count will start at the current position, so person 'A' would 
+count 1, person 'B' would count 2, and person 'C' would count 3. Since 'C' is the 3rd person in the count they are eliminated by person 
+'B'. The count would continue with person 'D' counting 4, person 'E' counting 5, and person 'F' counting 6. Since 6 is evenly divisible 
+by the step size person 'F' would be eliminated by person 'E'. Person 'G' would then count 7. At this point we have satisfied the first 
+condition for ending a cycle, we have counted every person in the circle at least once, however the current count is not evenly divisible 
+by the step size so we must continue. Person 'A' would count 8 and person 'B' would count 9. Person 'B' is eliminated by person 'A' and 
+since the count is now evenly divisible by the step size we end this cycle and print a message stating the cycle has ended. At the end of 
+this there would be 4 people remaining in the circle: {'A','D','E','G'} and the current position is at 'D'.</p>
 
 </div>
 <div>
@@ -355,7 +379,7 @@ we suggest the following steps:</p>
       step. Create a small text file for testing (it will be easier to debug
       than larger ones) and make sure you test all the boundary and negative
       cases.  
-      <a name="InputFiles"></a> <em>Download these sample genre files,
+      <a name="InputFiles"></a> <em>Download these sample circle file,
       <a href="assignments/p2/files/circle.txt">circle.txt</a> and follow the
 	  steps in the <a href="assignments/p2/files/sampleInput.txt">sampleInput.txt</a>
       and make sure your program produces the <b>exact same</b> output as given in 
@@ -367,7 +391,7 @@ we suggest the following steps:</p>
       in a terminal window as in this example: <dir><tt>javac *.java</tt></dir>
       and the run your program using <tt>java</tt> as in:
 
-      <dir><tt>java JosephusMain</tt></dir></li>
+      <dir><tt>java JosephusMain circle.txt</tt></dir></li>
 
   <li>Submit your work for grading.</li>
 </ol>
