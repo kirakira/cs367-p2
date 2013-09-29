@@ -19,7 +19,7 @@ public interface CircularListADT<E> {
      * Adds the given item to the current position in list. If the list was
      * empty, the current position should point to the new item. Otherwise,
      * the element currently in this position should be shifted to be next to
-     * the new item.
+     * the new item, and the new item becomes the current position.
      *
      * @param item the item to add
      */

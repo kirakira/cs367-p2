@@ -1,7 +1,7 @@
 <!--
   Programming Assignment 2 Write-up
   Version: 0.3 
-  Date Changed: 9/25/13
+  Date Changed: 9/29/13
   Last Edited By: Menghui Wang
   
   Change Log:
@@ -20,6 +20,8 @@
               through a single cycle.
     9/25/13 - Release Version (0.3) for review
     9/26/13 - Fixed some typos; added some clarification for the "a" command
+    9/29/13 - JosephusMain should use CircularLinkedList<String>, instead
+              of CircularLinkedList<E>
   
 -->
 <content for="title">CS 367, Programming Assignment 2</content>
@@ -249,7 +251,7 @@ exception. You may write any constructors and methods you deem necessary for thi
 <h3>The <tt>JosephusMain</tt> class</h3>
 
 <p>The application program, <tt>JosephusMain</tt>, creates and uses a
-<tt>CircularLinkedList&lt;E&gt;</tt> to represent and simulate the Josephus counting problem.
+<tt>CircularLinkedList&lt;String&gt;</tt> to represent and simulate the Josephus counting problem.
  You will write code for each of the options
 listed below. Your code should make use of the <tt>CircularLinkedList</tt> and <tt>ElementNotFoundException</tt> classes you have written, where appropriate.</p>
 
