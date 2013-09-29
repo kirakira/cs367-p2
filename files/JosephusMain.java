@@ -19,9 +19,6 @@ public class JosephusMain {
         //** You may also add additional variables as needed **//
 
         while (true) {
-            System.out.print("Enter option: ");
-            System.out.flush();
-
             String line = scan.nextLine();
             if (line == null || line.length() == 0)
                 continue;
