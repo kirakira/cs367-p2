@@ -89,7 +89,7 @@ public class JosephusMain {
                     }
                     System.out.println("Cycle Number " + (c + 1) + " Has Ended");
                 }
-                if (list.size() >= 2)
+                if (list.size() >= 2 || list.size() == 0)
                     System.out.println(list.size() + " people still remain alive");
                 else
                     System.out.println(list.size() + " person still remains alive");

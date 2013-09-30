@@ -1,6 +1,6 @@
 r 3 f 2
 p
-a Smily
+a Smiley
 r 5 backward 0
 p
 a A

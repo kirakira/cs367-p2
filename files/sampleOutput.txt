@@ -36,7 +36,7 @@ Natividad
 Cycle Number 1 Has Begun
 Nelida has been eliminated by Major
 Robert has been eliminated by Edgardo
-Smily has been eliminated by Alina
+Smiley has been eliminated by Alina
 Cycle Number 1 Has Ended
 Cycle Number 2 Has Begun
 Jeanice has been eliminated by Quincy
@@ -63,7 +63,7 @@ Cycle Number 7 Has Ended
 Cycle Number 8 Has Begun
 Georgetta has been eliminated by Georgetta
 Cycle Number 8 Has Ended
-0 person still remains alive
+0 people still remain alive
 D
 C
 B
@@ -90,5 +90,5 @@ H has been eliminated by F
 G has been eliminated by F
 F has been eliminated by F
 Cycle Number 1 Has Ended
-0 person still remains alive
+0 people still remain alive
 exit
