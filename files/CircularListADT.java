@@ -7,7 +7,7 @@
  * Positions in a CircularListADT are identified by the current position and
  * an offset. Positive offsets represent positions next to the current
  * position; negative offsets represent positions prior to the current
- * position; zero offset represents the current position iteself.
+ * position; zero offset represents the current position itself.
  *
  * The abstract values of offsets can be greater than or equal to the size of
  * the list. In this case, two operations with different offsets are equivalent
