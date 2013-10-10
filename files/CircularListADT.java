@@ -10,7 +10,7 @@
  * position; zero offset represents the current position itself.
  *
  * The abstract values of offsets can be greater than or equal to the size of
- * the list. In this case, two operations with different offsets are equivalent
+ * the list. In such case, two operations with different offsets are equivalent
  * if they are congruent modulo the size of the list.
  */
 public interface CircularListADT<E> {
