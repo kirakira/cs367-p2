@@ -92,7 +92,7 @@ public class JosephusMain {
                 if (list.size() >= 2 || list.size() == 0)
                     System.out.println(list.size() + " people still remain alive");
                 else
-                    System.out.println(list.size() + " person still remains alive");
+                    System.out.println(list.size() + " person remains alive");
 
             } else if (command[0].equalsIgnoreCase("x")) {
                 System.out.println("exit");

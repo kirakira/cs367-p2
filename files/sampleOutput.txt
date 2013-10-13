@@ -84,7 +84,7 @@ Cycle Number 1 Has Ended
 Cycle Number 2 Has Begun
 E has been eliminated by F
 Cycle Number 2 Has Ended
-1 person still remains alive
+1 person remains alive
 Cycle Number 1 Has Begun
 H has been eliminated by F
 G has been eliminated by F
