@@ -13,7 +13,7 @@ public class JosephusMain {
 
         // *** Step 3: Load the data from the input file *** 
         // *** Add code for step3 here ***
-        
+ 
         Scanner scan = new Scanner(System.in);
 
         //** You may also add additional variables as needed **//

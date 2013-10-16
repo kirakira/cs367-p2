@@ -55,9 +55,9 @@ public class JosephusMain {
                 try {
                     stepSize = Integer.parseInt(command[1]);
 
-                    if (command[2].equalsIgnoreCase("f") || command[2].equalsIgnoreCase("forward"))
+                    if (command[2].equals("f") || command[2].equals("forward"))
                         dir = true;
-                    else if (command[2].equalsIgnoreCase("b") || command[2].equalsIgnoreCase("backward"))
+                    else if (command[2].equals("b") || command[2].equals("backward"))
                         dir = false;
                     else {
                         printOptions();
