@@ -54,37 +54,37 @@ public class CircularLinkedList<E> implements CircularListADT<E> {
         return count;
     }
 
-    public E get(int offset) throws ElementNotFoundException {
-        if (count == 0)
-            throw new ElementNotFoundException();
-
-        ListNode<E> t = current;
-        offset = offset % count;
-
-        for (int i = 0; i < offset; ++i)
-            t = t.getNext();
-        for (int i = 0; i > offset; --i)
-            t = t.getPrevious();
-
-        return t.getData();
-    }
-    
     public void setCurrentPosition(int offset) {
         if (count == 0)
             return;
 
-        offset = offset % count;
+        offset %= count;
         for (int i = 0; i < offset; ++i)
             current = current.getNext();
         for (int i = 0; i > offset; --i)
             current = current.getPrevious();
     }
 
+    public E get(int offset) throws ElementNotFoundException {
+        if (count == 0)
+            throw new ElementNotFoundException();
+
+        setCurrentPosition(offset);
+        E ret = current.getData();
+        setCurrentPosition(-offset);
+
+        return ret;
+    }
+    
     public String print(int offset) {
         StringBuilder sb = new StringBuilder();
         try {
-            for (int i = 0; i < count; ++i)
-                sb.append(get(offset + i).toString() + "\n");
+            setCurrentPosition(offset);
+            for (int i = 0; i < count; ++i) {
+                sb.append(get(0).toString() + "\n");
+                setCurrentPosition(1);
+            }
+            setCurrentPosition(-offset);
         } catch (ElementNotFoundException e) {
         }
         return sb.toString();
