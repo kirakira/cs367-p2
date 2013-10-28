@@ -1,216 +1,130 @@
 #!/bin/sh
 
-cd ~
+FILES=("CircularLinkedList.java" "ElementNotFoundException.java" "JosephusMain.java")
+GIVEN=("CircularListADT.java" "ListNode.java")
+GRADER="CircularLinkedListTester.java"
+MAIN="JosephusMain"
 
+containsElement () {
+    local e
+    for e in "${@:2}"; do
+        if [ $e == $1 ]; then
+            return 1
+        fi
+    done
+    return 0
+}
+
+function grade {
+    name=$(basename $1)
+    echo "Running tests for $name..."
+
+    mkdir -p cs367_grading_p2/$name
+    cd cs367_grading_p2/$name
+    rm -rf *
+
+    cp /p/course/cs367-skrentny/handin/$name/p2/* .
+
+    found_all_files=1
+
+    for f in ${FILES[*]}; do
+        if [ ! -f $f ]; then
+            echo "Could not find $f" >> Output.txt
+            found_all_files=0
+        fi
+    done
+
+    for f in *; do
+        if [ $f == "README.txt" ]; then
+	        echo "Found a README. This student worked with a partner, view README." >> Output.txt
+	        echo "This student worked with a partner. View their README file."
+        else
+            containsElement $f ${FILES[*]}
+            if [ $? == 0 ]; then
+                echo "Found extra file: $f" >> Output.txt
+            fi
+        fi
+    done
+
+    if [ $found_all_files == 0 ]; then
+        echo "Due to lack of necessary source files, skipped tests for $name"
+        echo "Due to lack of necessary source files, skipped tests for $name" >> Output.txt
+    else
+        for f in ${GIVEN[*]}; do
+            cp /p/course/cs367-skrentny/public/html/assignments/p2/files/$f .
+        done
+        cp /p/course/cs367-skrentny/public/html/assignments/p2/grading/$GRADER .
+
+        javac *.java &>> Output.txt
+
+        if [ $? == 0 ]; then
+            echo "Compiled successfullly"
+
+            echo "Running pretests"
+            /p/course/cs367-skrentny/public/html/assignments/p2/grading/timeout.sh -t 10 java ${GRADER%.java} >> Output.txt
+            if [ $? != 0 ]; then
+                echo "Time limit exceeded; there may be an infinite loop in the code" >> Output.txt
+            fi
+
+            echo "" >> Output.txt
+            for txt in /p/course/cs367-skrentny/public/html/assignments/p2/grading/cases/*.txt; do
+                inp=${txt%.txt}.in
+                if [ -f $inp ]; then
+                    caseName=$(basename $inp)
+                    caseName=${caseName%.*}
+                    oup=$caseName.out
+
+                    echo "====Case: $caseName====" >> Output.txt
+                    echo "Running case $caseName"
+                    /p/course/cs367-skrentny/public/html/assignments/p2/grading/timeout.sh -t 10 java $MAIN $txt < $inp &> $oup
+
+                    if [ $? != 0 ]; then
+                        echo "Verdict: TIMED OUT" >> Output.txt
+                    else
+                        ans=${txt%.txt}.ans
+                        if [ -f $ans ]; then
+                            diff $oup $ans > $caseName.diff
+                            if [ -s $caseName.diff ]; then
+                                echo "Verdict: WRONG" >> Output.txt
+                                echo "See $oup for full output. Following are diff result:" >> Output.txt
+                                cat $caseName.diff >> Output.txt
+                            else
+                                echo "Verdict: correct" >> Output.txt
+                            fi
+                        else
+                            echo "Full output:" >> Output.txt
+                            cat $oup >> Output.txt
+                        fi
+                    fi
+
+                    echo "" >> Output.txt
+                fi
+            done
+        else
+            echo "Failed compilation"
+            echo "Due to compilation errors, skipped all of the tests" >> Output.txt
+        fi
+    fi
+
+    echo "Finished testing for $name"
+    echo ""
+
+    cd ..
+    cd ..
+}
+
+cd ~
 if [ ! -z $1 ] ; then
-echo "Running tests for "$1" . . ."
-      cd ~/cs367_grading_p2/$1
-	  rm -rf Output.txt
-	  found_all_files=true
-	  if [ ! -f LinkedList.java ]; then
-		echo "Could not find LinkedList.java." >> Output.txt
-		found_all_files=false
-	  fi
-	  if [ ! -f MovieQueueMain.java ]; then
-		echo "Could not find MovieQueueMain.java." >> Output.txt
-		found_all_files=false
-	  fi
-	  if [ ! -f InvalidListPositionException.java ]; then
-		echo "Could not find InvalidListPositionException.java." >> Output.txt
-		found_all_files=false
-	  fi
-	  found_readme=false
-	  if [ -f README.txt ]; then
-		found_readme=true
-	  fi
-	  if [ ! $found_all_files ] &&  [ ! $found_readme ]; then
-	    echo "Could not find a README either. This student either named all files incorrectly or did not submit anything." >> Output.txt
-		echo "Can't find the required files for this student. Check their folder."
-		studentsNocompile[$nocompile]=$1
-		nocompile=$nocompile+1
-	  fi
-	  
-	  if $found_readme ; then
-	    echo "Found a README. This student worked with a partner, view README." >> Output.txt
-	    echo "This student worked with a partner. View their README file."
-	  fi
-	  
-	  
-	  if $found_all_files ; then
-		  compiled=true
-	      echo "Running tests... " >> Output.txt
-		  echo " " >> Output.txt
-		  ## Compiling ListNode
-		  javac ListNode.java >> Output.txt
-		  if [ ! -f ListNode.class ] ; then
-			echo "ListNode.java failed to compile. The student should not have modified this file." >> Output.txt
-			compiled=false
-		  fi
-		  echo "================= Compiling InvalidListPositionException.java =================" >> Output.txt
-		  javac InvalidListPositionException.java >> Output.txt
-		  if [ ! -f InvalidListPositionException.class ] ; then
-			echo "InvalidListPositionException.java failed to compile. View student's code." >> Output.txt
-			compiled=false
-		  else
-		    echo "InvalidListPositionException.java compiled successfully." >> Output.txt
-		  fi
-		  ## Compiling ListADT
-		  javac ListADT.java >> Output.txt
-		  if [ ! -f ListADT.class ] ; then
-			echo "ListADT.java failed to compile. The student should not have modified this file." >> Output.txt
-			compiled=false
-		  fi
-		  echo "================= Compiling LinkedList.java =================" >> Output.txt
-		  javac LinkedList.java >> Output.txt
-		  if [ ! -f LinkedList.class ] ; then
-			echo "LinkedList.java failed to compile. View student's code." >> Output.txt
-			compiled=false
-		  else
-		    echo "LinkedList.java compiled successfully." >> Output.txt
-		  fi
-		  echo " " >> Output.txt
-		  echo "============= Compiling MovieQueueMain.java ===============" >> Output.txt
-		  javac MovieQueueMain.java >> Output.txt
-		  if [ ! -f MovieQueueMain.class ]; then
-		    echo "MovieQueueMain.java failed to compile. View student's code." >> Output.txt
-			compiled=false
-		  else
-		    echo "MovieQueueMain.java compiled successfully." >> Output.txt
-		  fi
-		  echo " " >> Output.txt
-		  echo "============= Compiling MovieQueueTester.java ===============" >> Output.txt
-		  javac MovieQueueTester.java >> Output.txt
-		  if [ ! -f MovieQueueTester.class ]; then
-		    echo "MovieQueueTester.java failed to compile. This may be because the student's LinkedList class is missing methods; view their code." >> Output.txt
-			compiled=false
-		  else
-		    echo "MovieQueueTester.java compiled successfully." >> Output.txt
-		  fi
-		  echo " " >> Output.txt
-		  if $compiled ; then
-		    echo "This student's files compiled successfully, running tests . . ."
-		    echo "================== Running Tests ========================" >> Output.txt
-		    /p/course/cs367-skrentny/public/html/assignments/p2/grading/timeout.sh -t 40 java MovieQueueTester >> Output.txt
-		  fi
-	  fi
-	  echo $1" complete."
-	  cd ..	
+    grade $1
 else
-	if [[ -d cs367_grading_p2 ]]; then
-		rm -rf cs367_grading_p2
-	fi
-	mkdir cs367_grading_p2
-	cd /p/course/cs367-skrentny/handin
+    if [[ -d cs367_grading_p2 ]]; then
+        rm -rf cs367_grading_p2
+    fi
+    mkdir cs367_grading_p2
 
-	for file in *; do
-	   if [ -d $file ]; then
-		  mkdir ~/cs367_grading_p2/$file
-		  cp $file/p2/* ~/cs367_grading_p2/$file
-	   fi
-	done
-
-	cd ~/cs367_grading_p2
-
-	nocompile=0
-	
-	for file in *; do
-	   if [ -d $file ]; then
-		  echo "Running tests for "$file" . . ."
-		  cd $file
-		  found_all_files=true
-		  if [ ! -f LinkedList.java ]; then
-			echo "Could not find LinkedList.java." >> Output.txt
-			found_all_files=false
-		  fi
-		  if [ ! -f MovieQueueMain.java ]; then
-			echo "Could not find MovieQueueMain.java." >> Output.txt
-			found_all_files=false
-		  fi
-		  found_readme=false
-		  if [ -f README.txt ]; then
-			found_readme=true
-		  fi
-		  if [ ! $found_all_files ] &&  [ ! $found_readme ]; then
-			echo "Could not find a README either. This student either named some files incorrectly or did not submit everything they needed to." >> Output.txt
-			echo "Can't find the required files for this student. Check their folder."
-		  fi
-		  
-		  if $found_readme ; then
-			echo "Found a README. This student worked with a partner, view README." >> Output.txt
-			echo "This student worked with a partner. View their README file."
-		  fi
-		  
-		  
-		  if $found_all_files ; then
-			  compiled=true
-			  echo "Running tests... " >> Output.txt
-			  echo " " >> Output.txt
-			  cp /p/course/cs367-skrentny/public/html/assignments/p2/grading/files/* .
-			  ## Compiling ListNode
-			  javac ListNode.java >> Output.txt
-			  if [ ! -f ListNode.class ] ; then
-			    echo "ListNode.java failed to compile. The student should not have modified this file." >> Output.txt
-				compiled=false
-			  fi
-			  echo "================= Compiling InvalidListPositionException.java =================" >> Output.txt
-			  javac InvalidListPositionException.java >> Output.txt
-			  if [ ! -f InvalidListPositionException.class ] ; then
-				echo "InvalidListPositionException.java failed to compile. View student's code." >> Output.txt
-				compiled=false
-			  else
-				echo "InvalidListPositionException.java compiled successfully." >> Output.txt
-			  fi
-			  ## Compiling ListADT
-			  javac ListADT.java >> Output.txt
-			  if [ ! -f ListADT.class ] ; then
-				echo "ListADT.java failed to compile. The student should not have modified this file." >> Output.txt
-				compiled=false
-			  fi
-			  echo "============== Compiling LinkedList.java ===============" >> Output.txt
-			  javac LinkedList.java >> Output.txt
-			  if [ ! -f LinkedList.class ] ; then
-				echo "LinkedList.java failed to compile. View student's code." >> Output.txt
-				compiled=false
-			  else
-				echo "LinkedList.java compiled successfully." >> Output.txt
-			  fi
-			  echo " " >> Output.txt
-			  echo "============= Compiling MovieQueueMain.java ===============" >> Output.txt
-			  javac MovieQueueMain.java >> Output.txt
-			  if [ ! -f MovieQueueMain.class ]; then
-				echo "MovieQueueMain.java failed to compile. View student's code." >> Output.txt
-				compiled=false
-			  else
-				echo "MovieQueueMain.java compiled successfully." >> Output.txt
-			  fi
-			  echo " " >> Output.txt
-			  echo "============= Compiling MovieQueueTester.java ===============" >> Output.txt
-			  javac MovieQueueTester.java >> Output.txt
-			  if [ ! -f MovieQueueTester.class ]; then
-				echo "MovieQueueTester.java failed to compile. This may be because the student's LinkedList class is missing methods; view their code." >> Output.txt
-				compiled=false
-			  else
-				echo "MovieQueueTester.java compiled successfully." >> Output.txt
-			  fi
-			  echo " " >> Output.txt
-			  if $compiled ; then
-				echo "This student's files compiled successfully, running tests . . ."
-				echo "================== Running Tests ========================" >> Output.txt
-				/p/course/cs367-skrentny/public/html/assignments/p2/grading/timeout.sh -t 40 java MovieQueueTester >> Output.txt
-			  else
-			    notCompiled[$nocompile]=$file
-				nocompile=$nocompile+1
-			  fi
-		  fi
-		  echo $file" complete."
-		  cd ..
-		fi
-	done
-	
-	echo "Students whose code did not compile:" >> DidNotCompile.txt
-	echo ${notCompiled[@]} >> DidNotCompile.txt
-	echo " " >> DidNotCompile.txt
+    for file in /p/course/cs367-skrentny/handin/*; do
+        if [[ -d $file ]]; then
+            grade $file
+        fi
+    done
 fi
-
-cd ~
-exit

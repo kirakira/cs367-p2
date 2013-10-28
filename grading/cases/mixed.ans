@@ -1,0 +1,25 @@
+A
+B
+C
+D
+E
+F
+G
+Cycle Number 1 Has Begun
+C has been eliminated by B
+F has been eliminated by E
+B has been eliminated by A
+Cycle Number 1 Has Ended
+4 people still remain alive
+Cycle Number 1 Has Begun
+A has been eliminated by D
+E has been eliminated by G
+Cycle Number 1 Has Ended
+Cycle Number 2 Has Begun
+G has been eliminated by D
+Cycle Number 2 Has Ended
+Cycle Number 3 Has Begun
+D has been eliminated by D
+Cycle Number 3 Has Ended
+0 people still remain alive
+exit
