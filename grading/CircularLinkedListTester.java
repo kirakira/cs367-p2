@@ -494,11 +494,11 @@ public class CircularLinkedListTester {
             if (!checkResult(s, "A\nC\nB"))
                 throw new WrongAnswerException("doesn't move the current position to the correct offset");
         } catch (IllegalAccessException e)  {
-            print("Method print() is not invocable");
+            print("Method setCurrentPosition() is not invocable");
         } catch (InvocationTargetException e) {
-            print("Method print() threw an expected exception");
+            print("Method setCurrentPosition() threw an expected exception");
         } catch (WrongAnswerException e) {
-            print("Method print() " + e.getMessage());
+            print("Method setCurrentPosition() " + e.getMessage());
         }
 
         try {
@@ -507,11 +507,11 @@ public class CircularLinkedListTester {
             if (!checkResult(s, "C\nB\nA"))
                 throw new WrongAnswerException("doesn't handle negative offsets");
         } catch (IllegalAccessException e)  {
-            print("Method print() is not invocable");
+            print("Method setCurrentPosition() is not invocable");
         } catch (InvocationTargetException e) {
-            print("Method print() threw an expected exception");
+            print("Method setCurrentPosition() threw an expected exception");
         } catch (WrongAnswerException e) {
-            print("Method print() " + e.getMessage());
+            print("Method setCurrentPosition() " + e.getMessage());
         }
     }
 

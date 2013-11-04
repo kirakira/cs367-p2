@@ -15,15 +15,21 @@ containsElement () {
     return 0
 }
 
-function grade {
+function copy_files {
     name=$(basename $1)
     echo "Running tests for $name..."
 
     mkdir -p cs367_grading_p2/$name
-    cd cs367_grading_p2/$name
-    rm -rf *
+    rm -rf cs367_grading/p2/$name
 
-    cp /p/course/cs367-skrentny/handin/$name/p2/* .
+    cp -t cs367_grading_p2/$name/ /p/course/cs367-skrentny/handin/$name/p2/*
+}
+
+function grade {
+    name=$(basename $1)
+
+    mkdir -p cs367_grading_p2/$name
+    cd cs367_grading_p2/$name
 
     found_all_files=1
 
@@ -79,7 +85,7 @@ function grade {
                     /p/course/cs367-skrentny/public/html/assignments/p2/grading/timeout.sh -t 10 java $MAIN $txt < $inp &> $oup
 
                     if [ $? != 0 ]; then
-                        echo "Verdict: TIMED OUT" >> Output.txt
+                        echo "Verdict: TIMED OUT or PROGRAM CRASHED. See $oup for details." >> Output.txt
                     else
                         ans=${txt%.txt}.ans
                         if [ -f $ans ]; then
@@ -124,6 +130,7 @@ else
 
     for file in /p/course/cs367-skrentny/handin/*; do
         if [[ -d $file ]]; then
+            copy_files $file
             grade $file
         fi
     done
